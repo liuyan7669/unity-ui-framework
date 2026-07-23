@@ -1,0 +1,7 @@
+{
+  "name": "Cowart.UIFramework",
+  "rootNamespace": "Cowart.UIFramework",
+  "references": [
+    "Unity.UGUI"
+  ]
+}

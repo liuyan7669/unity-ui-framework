@@ -1,0 +1,11 @@
+{
+  "name": "Cowart.UIFramework.Editor",
+  "rootNamespace": "Cowart.UIFramework.Editor",
+  "references": [
+    "Cowart.UIFramework",
+    "Unity.UGUI"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}
