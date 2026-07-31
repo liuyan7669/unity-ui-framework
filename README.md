@@ -33,7 +33,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#1.0.0
+https://github.com/liuyan7669/unity-ui-framework.git#1.0.1
 ```
 
 ## 创建 UI 根节点
@@ -41,7 +41,7 @@ https://github.com/liuyan7669/unity-ui-framework.git#1.0.0
 在 Unity 菜单中选择：
 
 ```text
-GameObject > UI > UI Framework Root
+GameObject > Cowart > UI > 创建 UI 框架层级
 ```
 
 生成的 Hierarchy：

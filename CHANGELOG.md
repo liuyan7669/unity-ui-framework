@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.1] - 2026-07-31
+
+- 将 Hierarchy 创建入口统一到 `GameObject > Cowart > UI > 创建 UI 框架层级`。
+- 更新 Configuration Tools 和 Object Tools 依赖版本。
+
 ## [1.0.0] - 2026-07-23
 
 - 新增 UIRoot、UIManager、UIView、UIArgs 和 UILayer 核心类型。

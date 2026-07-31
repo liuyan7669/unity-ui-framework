@@ -1,6 +1,6 @@
 {
   "name": "com.cowart.ui-framework",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "UI Framework",
   "description": "提供基于 Unity UGUI 的分层界面管理、场景面板扫描、面板开关、查找、批量关闭和删除功能。",
   "unity": "2021.3",
@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "com.cowart.audio-player": "1.0.0",
-    "com.cowart.configuration-tools": "1.0.0",
-    "com.cowart.object-tools": "1.0.1",
+    "com.cowart.configuration-tools": "1.0.1",
+    "com.cowart.object-tools": "1.0.2",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.ugui": "1.0.0"
   },

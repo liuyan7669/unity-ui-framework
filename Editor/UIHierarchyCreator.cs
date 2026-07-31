@@ -17,7 +17,7 @@ namespace Cowart.UIFramework.Editor
         /// 创建 UIRoot、UICamera、EventSystem、UICanvas 及全部 UI 层级。
         /// </summary>
         /// <param name="menuCommand">Unity 菜单命令上下文。</param>
-        [MenuItem("GameObject/UI/UI Framework Root", false, 0)]
+        [MenuItem("GameObject/Cowart/UI/创建 UI 框架层级", false, 0)]
         private static void Create(MenuCommand menuCommand)
         {
             GameObject rootObject = new GameObject("UIRoot", typeof(UIRoot), typeof(UIManager));
@@ -44,7 +44,7 @@ namespace Cowart.UIFramework.Editor
 
         /// <summary>检查当前场景是否允许创建新的 UIRoot。</summary>
         /// <returns>场景中不存在 UIRoot 时返回 true。</returns>
-        [MenuItem("GameObject/UI/UI Framework Root", true)]
+        [MenuItem("GameObject/Cowart/UI/创建 UI 框架层级", true)]
         private static bool ValidateCreate()
         {
             return Object.FindObjectOfType<UIRoot>() == null;
