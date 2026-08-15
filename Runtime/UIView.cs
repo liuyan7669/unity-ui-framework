@@ -8,6 +8,7 @@ namespace Cowart.UIFramework
     /// <summary>
     /// 所有可被 UIManager 管理的 UI 面板基类，提供层级和开关生命周期。
     /// </summary>
+    [DisallowMultipleComponent]
     public abstract class UIView : MonoBehaviour
     {
         #region 字段
@@ -161,7 +162,8 @@ namespace Cowart.UIFramework
                 return;
             }
 
-            UIRoot root = GetComponentInParent<UIRoot>(true);
+            UIRoot[] roots = GetComponentsInParent<UIRoot>(true);
+            UIRoot root = roots.Length > 0 ? roots[0] : null;
             if (root == null)
             {
                 return;

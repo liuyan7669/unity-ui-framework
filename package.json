@@ -1,9 +1,9 @@
 {
   "name": "com.cowart.ui-framework",
-  "version": "1.0.1",
+  "version": "1.0.12",
   "displayName": "UI Framework",
-  "description": "提供基于 Unity UGUI 的分层界面管理、场景面板扫描、面板开关、查找、批量关闭和删除功能。",
-  "unity": "2021.3",
+  "description": "提供基于 Unity UGUI 的分层界面管理、面板生命周期和 UI 组件快捷扩展。",
+  "unity": "2019.4",
   "author": {
     "name": "Cowart"
   },
@@ -13,14 +13,12 @@
     "url": "https://github.com/liuyan7669/unity-ui-framework.git"
   },
   "dependencies": {
-    "com.cowart.audio-player": "1.0.0",
-    "com.cowart.configuration-tools": "1.0.1",
-    "com.cowart.object-tools": "1.0.2",
-    "com.unity.textmeshpro": "3.0.6",
+    "com.unity.textmeshpro": "2.1.6",
     "com.unity.ugui": "1.0.0"
   },
   "keywords": [
     "canvas",
+    "extensions",
     "framework",
     "ugui",
     "ui"
@@ -28,7 +26,7 @@
   "samples": [
     {
       "displayName": "UI Framework Examples",
-      "description": "UI Framework 常用界面脚本、Prefab 和字体资源示例。",
+      "description": "UI Framework 常用界面脚本、Prefab 和字体资源示例；部分示例需要可选依赖。",
       "path": "Samples~/UI Framework"
     }
   ]

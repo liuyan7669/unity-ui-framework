@@ -1,0 +1,14 @@
+{
+  "name": "Cowart.UIFramework.Editor.Tests",
+  "references": [
+    "Cowart.UIFramework",
+    "Unity.UGUI",
+    "Unity.TextMeshPro"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

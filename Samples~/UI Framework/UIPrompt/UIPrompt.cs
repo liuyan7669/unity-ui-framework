@@ -33,17 +33,18 @@ public class UIPrompt : UIView
 
     protected override void OnOpen(UIArgs args)
     {
-        UIArg arg = args.As<UIArg>();
+        UIArg arg = args == null ? null : args.As<UIArg>();
 
-        okButton.ExtSetActive(arg.okActive);
-        noButton.ExtSetActive(arg.noActive);
-        closeButton.ExtSetActive(arg.closeActive);
+        bool hasArgs = arg != null;
+        okButton.gameObject.SetActive(hasArgs && arg.okActive);
+        noButton.gameObject.SetActive(hasArgs && arg.noActive);
+        closeButton.gameObject.SetActive(hasArgs && arg.closeActive);
 
         okButton.onClick.RemoveAllListeners();
         noButton.onClick.RemoveAllListeners();
         closeButton.onClick.RemoveAllListeners();
 
-        if (arg == null)
+        if (!hasArgs)
         {
             text.text = string.Empty;
             return;

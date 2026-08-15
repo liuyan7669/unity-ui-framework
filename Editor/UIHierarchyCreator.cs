@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cowart.UIFramework;
 
@@ -13,11 +14,16 @@ namespace Cowart.UIFramework.Editor
     /// </summary>
     public static class UIHierarchyCreator
     {
+        private const string MenuPath = "GameObject/Cowart/UI/创建 UI 框架层级";
+        private const string PanelMenuPath = "GameObject/Cowart/UI/创建面板";
+        private const string PanelBackgroundSpritePath = "UI/Skin/Background.psd";
+        private const int UiMenuGroupPriority = 100;
+
         /// <summary>
         /// 创建 UIRoot、UICamera、EventSystem、UICanvas 及全部 UI 层级。
         /// </summary>
         /// <param name="menuCommand">Unity 菜单命令上下文。</param>
-        [MenuItem("GameObject/Cowart/UI/创建 UI 框架层级", false, 0)]
+        [MenuItem(MenuPath, false, UiMenuGroupPriority)]
         private static void Create(MenuCommand menuCommand)
         {
             GameObject rootObject = new GameObject("UIRoot", typeof(UIRoot), typeof(UIManager));
@@ -44,10 +50,95 @@ namespace Cowart.UIFramework.Editor
 
         /// <summary>检查当前场景是否允许创建新的 UIRoot。</summary>
         /// <returns>场景中不存在 UIRoot 时返回 true。</returns>
-        [MenuItem("GameObject/Cowart/UI/创建 UI 框架层级", true)]
+        [MenuItem(MenuPath, true)]
         private static bool ValidateCreate()
         {
-            return Object.FindObjectOfType<UIRoot>() == null;
+            return !HasUIFrameworkHierarchy(Selection.activeGameObject);
+        }
+
+        /// <summary>
+        /// 在右键选中的 UGUI 物体下创建一个铺满父节点的标准 Panel。
+        /// </summary>
+        /// <param name="menuCommand">Unity 菜单命令上下文。</param>
+        [MenuItem(PanelMenuPath, false, UiMenuGroupPriority)]
+        private static void CreatePanel(MenuCommand menuCommand)
+        {
+            GameObject parentObject = menuCommand.context as GameObject;
+            if (parentObject == null)
+            {
+                parentObject = Selection.activeGameObject;
+            }
+
+            if (!CanCreatePanel(parentObject))
+            {
+                return;
+            }
+
+            DefaultControls.Resources resources = new DefaultControls.Resources
+            {
+                background = AssetDatabase.GetBuiltinExtraResource<Sprite>(PanelBackgroundSpritePath)
+            };
+            GameObject panelObject = DefaultControls.CreatePanel(resources);
+            GameObjectUtility.SetParentAndAlign(panelObject, parentObject);
+            GameObjectUtility.EnsureUniqueNameForSibling(panelObject);
+            panelObject.layer = parentObject.layer;
+
+            Image panelImage = panelObject.GetComponent<Image>();
+            Color panelColor = panelImage.color;
+            panelColor.a = 0f;
+            panelImage.color = panelColor;
+
+            RectTransform panelTransform = panelObject.GetComponent<RectTransform>();
+            panelTransform.anchorMin = Vector2.zero;
+            panelTransform.anchorMax = Vector2.one;
+            panelTransform.offsetMin = Vector2.zero;
+            panelTransform.offsetMax = Vector2.zero;
+            panelTransform.localScale = Vector3.one;
+
+            Undo.RegisterCreatedObjectUndo(panelObject, "Create UI Panel");
+            Selection.activeGameObject = panelObject;
+            EditorSceneManager.MarkSceneDirty(panelObject.scene);
+        }
+
+        /// <summary>检查当前选择是否允许创建 UGUI Panel。</summary>
+        /// <returns>场景已有 UIRoot 且选择的是场景内 UGUI 物体时返回 true。</returns>
+        [MenuItem(PanelMenuPath, true)]
+        private static bool ValidateCreatePanel()
+        {
+            return CanCreatePanel(Selection.activeGameObject);
+        }
+
+        /// <summary>检查上下文物体所在场景中是否已经存在 UI Framework 根节点。</summary>
+        private static bool HasUIFrameworkHierarchy(GameObject contextObject)
+        {
+            Scene scene = contextObject != null && contextObject.scene.IsValid()
+                ? contextObject.scene
+                : SceneManager.GetActiveScene();
+            if (!scene.IsValid() || !scene.isLoaded)
+            {
+                return false;
+            }
+
+            GameObject[] rootObjects = scene.GetRootGameObjects();
+            for (int i = 0; i < rootObjects.Length; i++)
+            {
+                if (rootObjects[i].GetComponentInChildren<UIRoot>(true) != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>检查指定物体能否作为新 Panel 的父节点。</summary>
+        private static bool CanCreatePanel(GameObject parentObject)
+        {
+            return parentObject != null
+                && !EditorUtility.IsPersistent(parentObject)
+                && HasUIFrameworkHierarchy(parentObject)
+                && parentObject.transform is RectTransform
+                && parentObject.GetComponentsInParent<Canvas>(true).Length > 0;
         }
 
         /// <summary>
