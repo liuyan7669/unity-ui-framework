@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0] - 2026-08-19
+
+- 修复使用基类静态类型传入 Prefab 时，`UIManager.Open` 重复创建并遗留失管面板的问题。
+- 明确无条件 API 的精确类型匹配与 Predicate API 的多态匹配规则，并简化 `CloseAll` 的关闭流程。
+- 修正 `UIManager`、`UIRoot` 类型文档和 RectTransform 坐标、尺寸扩展的 XML 注释。
+- 新增 `UIManager`、`UIView`、`UIRoot` 和 `UIEventExtensions` 的 EditMode 测试，并增强测试程序集隔离配置。
+- 在 README 中补充类型匹配规则、测试启用方式和覆盖范围。
+
 ## [1.0.12] - 2026-08-15
 
 - 删除 `UIEmptyPanel` 占位组件及其自动替换编辑器逻辑；创建面板时不再自动挂载 `UIView` 脚本。

@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Cowart.UIFramework
 {
-    [DisallowMultipleComponent]
-    [RequireComponent(typeof(UIRoot))]
-    [DefaultExecutionOrder(-32000)]
     /// <summary>
     /// 负责 UI 面板实例的创建、缓存、查询、打开和关闭。
     /// </summary>
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(UIRoot))]
+    [DefaultExecutionOrder(-32000)]
     public sealed class UIManager : MonoBehaviour
     {
         #region 字段
@@ -22,6 +22,9 @@ namespace Cowart.UIFramework
 
         /// <summary>当前生效的 UI 管理器实例，仅供类内部的静态入口使用。</summary>
         private static UIManager instance;
+
+        /// <summary>是否正在执行全部面板的关闭流程，用于防止 OnClose 重入。</summary>
+        private bool isClosingAll;
 
         #endregion
 
@@ -57,6 +60,7 @@ namespace Cowart.UIFramework
         /// 打开场景启动时已扫描注册，或此前已经创建并保留的指定类型面板。
         /// </summary>
         /// <remarks>
+        /// 此重载使用 <typeparamref name="T"/> 的精确类型查找，不会返回其派生类实例。
         /// 此重载不会创建新实例。每次调用都会把打开参数传给面板；当面板及其父级均处于激活状态时，
         /// 面板会移动到当前层级的最后一个同级节点，并触发 <see cref="UIView.OnOpen"/>。
         /// 找不到面板时应改用带 Prefab 参数的重载。
@@ -82,7 +86,8 @@ namespace Cowart.UIFramework
         /// 打开指定类型的 UI 面板；不存在已注册实例时使用 Prefab 创建并注册面板。
         /// </summary>
         /// <remarks>
-        /// 字典中已有同类型实例时会直接复用该实例，传入的 Prefab 不会再次实例化。
+        /// 此重载按 Prefab 的运行时具体类型查找和注册。即使 Prefab 由基类变量引用，
+        /// 字典中已有同一具体类型实例时也会直接复用，不会再次实例化 Prefab。
         /// 没有实例时，Prefab 会被实例化到其 <see cref="UIView.Layer"/> 对应的层级下。
         /// 每次调用都会传递 args；当面板及其父级均激活时触发 <see cref="UIView.OnOpen"/>。
         /// </remarks>
@@ -100,8 +105,9 @@ namespace Cowart.UIFramework
             }
 
             UIManager manager = GetInstance();
+            Type viewType = prefab.GetType();
             UIView cachedView;
-            if (!manager.views.TryGetValue(typeof(T), out cachedView) || cachedView == null)
+            if (!manager.views.TryGetValue(viewType, out cachedView) || cachedView == null)
             {
                 RectTransform layer = manager.root.GetLayer(prefab.Layer);
                 if (layer == null)
@@ -120,6 +126,10 @@ namespace Cowart.UIFramework
         /// <summary>
         /// 查找指定类型的已注册面板。
         /// </summary>
+        /// <remarks>
+        /// 使用 <typeparamref name="T"/> 的精确类型查找，不会返回其派生类实例。
+        /// 需要按基类筛选派生面板时，请使用带 Predicate 参数的重载。
+        /// </remarks>
         /// <typeparam name="T">面板类型。</typeparam>
         /// <returns>找到时返回面板实例；面板未注册、已删除或实例失效时返回 null。</returns>
         public static T Find<T>() where T : UIView
@@ -131,6 +141,8 @@ namespace Cowart.UIFramework
         /// <summary>
         /// 根据条件查找第一个匹配的已注册面板。
         /// </summary>
+        /// <remarks>筛选范围包含 <typeparamref name="T"/> 及其派生类实例。</remarks>
+        /// <typeparam name="T">需要查找的面板基类型。</typeparam>
         /// <param name="match">用于判断面板是否匹配的条件。</param>
         /// <returns>第一个匹配的面板；没有匹配项时返回 null。</returns>
         /// <exception cref="ArgumentNullException">match 为 null。</exception>
@@ -156,6 +168,7 @@ namespace Cowart.UIFramework
         /// <summary>
         /// 根据条件获取所有匹配的已注册面板实例。
         /// </summary>
+        /// <remarks>筛选范围包含 <typeparamref name="T"/> 及其派生类实例。</remarks>
         /// <typeparam name="T">需要查找的面板类型。</typeparam>
         /// <param name="match">用于判断面板是否匹配的条件。</param>
         /// <returns>符合条件的已注册面板实例数组。</returns>
@@ -188,6 +201,7 @@ namespace Cowart.UIFramework
         /// 关闭并隐藏指定类型的面板，保留实例以供后续复用。
         /// </summary>
         /// <remarks>
+        /// 使用 <typeparamref name="T"/> 的精确类型查找，不会关闭其派生类实例。
         /// 面板未注册时不执行任何操作。面板自身已关闭时不会重复处理。
         /// 面板在 Hierarchy 中实际激活时，先触发 <see cref="UIView.OnClose"/>，再将面板 GameObject 设为未激活。
         /// 如果父级已经关闭，则不重复触发 OnClose，但仍会关闭面板自身，防止父级恢复后面板意外显示。
@@ -202,6 +216,7 @@ namespace Cowart.UIFramework
         /// <summary>
         /// 根据条件关闭并隐藏所有匹配的已注册面板，保留实例以供后续复用。
         /// </summary>
+        /// <remarks>筛选范围包含 <typeparamref name="T"/> 及其派生类实例。</remarks>
         /// <typeparam name="T">需要筛选的面板类型。</typeparam>
         /// <param name="match">用于判断面板是否需要关闭的条件。</param>
         /// <exception cref="ArgumentNullException">match 为 null。</exception>
@@ -258,25 +273,49 @@ namespace Cowart.UIFramework
         /// <remarks>
         /// 此方法只执行关闭流程，不会从字典移除或销毁面板。未激活面板会由 UIView 自行忽略。
         /// ignoredTypes 使用精确类型匹配，例如 CloseAll(typeof(HUDPanel), typeof(LoadingPanel))。
+        /// 关闭前会创建实例快照，OnClose 中修改注册表不会破坏本次遍历；OnClose 中的重入 CloseAll 调用会被忽略。
         /// </remarks>
         /// <param name="ignoredTypes">需要保持当前状态、不执行关闭的面板类型。</param>
         public static void CloseAll(params Type[] ignoredTypes)
         {
-            HashSet<Type> ignoredTypeSet = ignoredTypes == null ? new HashSet<Type>() : new HashSet<Type>(ignoredTypes);
-            UIView[] viewsToClose = FindAll<UIView>(view => !ignoredTypeSet.Contains(view.GetType()));
-            Type[] viewTypes = new Type[viewsToClose.Length];
-            for (int i = 0; i < viewsToClose.Length; i++)
+            UIManager manager = GetInstance();
+            if (manager.isClosingAll)
             {
-                viewTypes[i] = viewsToClose[i].GetType();
+                return;
             }
 
-            Close(viewTypes);
+            HashSet<Type> ignoredTypeSet = ignoredTypes == null ? new HashSet<Type>() : new HashSet<Type>(ignoredTypes);
+            List<UIView> viewsToClose = new List<UIView>();
+            foreach (UIView view in manager.views.Values)
+            {
+                if (view != null && !ignoredTypeSet.Contains(view.GetType()))
+                {
+                    viewsToClose.Add(view);
+                }
+            }
+
+            manager.isClosingAll = true;
+            try
+            {
+                foreach (UIView view in viewsToClose)
+                {
+                    if (view != null)
+                    {
+                        view.Close();
+                    }
+                }
+            }
+            finally
+            {
+                manager.isClosingAll = false;
+            }
         }
 
         /// <summary>
         /// 从管理器中移除并销毁指定类型的面板实例。
         /// </summary>
         /// <remarks>
+        /// 使用 <typeparamref name="T"/> 的精确类型查找，不会删除其派生类实例。
         /// 面板未注册时不执行任何操作。销毁前会先执行与 <see cref="Close{T}"/> 相同的关闭流程，
         /// 随后从字典移除，并在当前帧结束时销毁面板 GameObject。销毁后再次打开该类型时，
         /// 必须使用带 Prefab 参数的 Open 重载重新创建实例。
@@ -290,6 +329,7 @@ namespace Cowart.UIFramework
         /// <summary>
         /// 根据条件删除所有匹配的已注册面板实例。
         /// </summary>
+        /// <remarks>筛选范围包含 <typeparamref name="T"/> 及其派生类实例。</remarks>
         /// <typeparam name="T">需要筛选的面板类型。</typeparam>
         /// <param name="match">用于判断面板是否需要删除的条件。</param>
         /// <exception cref="ArgumentNullException">match 为 null。</exception>
@@ -360,7 +400,7 @@ namespace Cowart.UIFramework
         #region 私有辅助方法
 
         /// <summary>
-        /// 尝试从当前管理器字典中获取指定类型的面板实例。
+        /// 尝试从当前管理器字典中按精确类型获取面板实例。
         /// </summary>
         /// <typeparam name="T">面板类型。</typeparam>
         /// <param name="view">找到的面板实例。</param>

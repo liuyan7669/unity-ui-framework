@@ -35,7 +35,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#1.0.12
+https://github.com/liuyan7669/unity-ui-framework.git#1.1.0
 ```
 
 ## 创建 UI 根节点
@@ -129,6 +129,14 @@ UIManager.Close<UIView>(view => view.gameObject.activeInHierarchy);
 UIManager.CloseAll(typeof(UIHome));
 ```
 
+`UIManager` 以面板的具体运行时类型作为唯一缓存键，同一个具体面板类型只保留一个受管理实例。类型匹配规则如下：
+
+- `Open<T>(args)`、`Find<T>()`、`Close<T>()` 和 `Delete<T>()` 按 `T` 精确匹配已注册面板。
+- `Open<T>(prefab, args)` 按 `prefab.GetType()` 查找和复用实例；即使 Prefab 变量声明为 `UIView`，也不会重复创建相同的具体面板。
+- 带 `Predicate<T>` 的 `Find`、`FindAll`、`Close` 和 `Delete` 会遍历已注册面板，并包含可转换为 `T` 的派生类型。
+
+因此，需要处理全部面板时应使用条件重载，例如 `UIManager.Close<UIView>(view => true)`；无条件的 `Close<UIView>()` 只会查找精确的 `UIView` 类型，而 `UIView` 本身是抽象类，正常情况下不会注册该键。
+
 ## UGUI 快捷扩展
 
 `UILayoutExtensions` 和 `UIEventExtensions` 位于全局命名空间，无需额外添加 using：
@@ -183,6 +191,22 @@ Unity 2019 和 2020 的旧版 UGUI 没有独立的 `InputField.onSubmit`，因�
 Package Manager 中提供 `UI Framework Examples` 导入入口，包含常用界面脚本、Prefab、配套字体资源和新手引导示例。
 
 `UIQuestion` 示例需要 Configuration Tools 和 Object Tools。`UINewbieGuide` 示例使用 DOTween 播放聚焦、点按、框选和拖放动画。导入对应示例前，请先安装这些可选依赖；它们不再作为 UI Framework 核心包的强制依赖。
+
+## 测试
+
+包内 `Tests/Editor` 提供 EditMode 测试，覆盖 `UIManager` 的面板缓存与类型匹配、`UIView` 生命周期、`UIRoot` 层级配置，以及 UGUI/TMP 事件和布局扩展。
+
+通过 Package Manager 安装后，如需在 Test Runner 中显示包测试，请在项目的 `Packages/manifest.json` 根对象中添加 `testables` 字段（以下仅示意）：
+
+```json
+{
+  "testables": [
+    "com.cowart.ui-framework"
+  ]
+}
+```
+
+然后打开 `Window > General > Test Runner`，在 EditMode 页签运行 `Cowart.UIFramework.Editor.Tests`。
 
 ## 环境要求
 

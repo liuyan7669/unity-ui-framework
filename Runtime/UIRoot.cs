@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Cowart.UIFramework
 {
-    [DisallowMultipleComponent]
-    [DefaultExecutionOrder(-32000)]
     /// <summary>
     /// 保存 UGUI 根节点、相机、Canvas 及各显示层级，并负责运行时层级校正。
     /// </summary>
+    [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-32000)]
     public sealed class UIRoot : MonoBehaviour
     {
         /// <summary>是否在切换场景时保留整个 UI 根节点。</summary>

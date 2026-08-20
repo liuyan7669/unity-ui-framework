@@ -35,33 +35,61 @@ public static class UILayoutExtensions
         image.color = color;
     }
 
+    /// <summary>设置 RectTransform 的 anchoredPosition.x，并保留 y。</summary>
+    /// <param name="target">目标 RectTransform。</param>
+    /// <param name="value">要设置的 x 坐标。</param>
     public static void ExtSetAnchoredPositionX(this RectTransform target, float value)
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            return;
+        }
+
         Vector2 position = target.anchoredPosition;
         position.x = value;
         target.anchoredPosition = position;
     }
 
+    /// <summary>设置 RectTransform 的 anchoredPosition.y，并保留 x。</summary>
+    /// <param name="target">目标 RectTransform。</param>
+    /// <param name="value">要设置的 y 坐标。</param>
     public static void ExtSetAnchoredPositionY(this RectTransform target, float value)
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            return;
+        }
+
         Vector2 position = target.anchoredPosition;
         position.y = value;
         target.anchoredPosition = position;
     }
 
+    /// <summary>设置 RectTransform 的 sizeDelta.x，并保留 y。</summary>
+    /// <param name="target">目标 RectTransform。</param>
+    /// <param name="value">要设置的宽度差值。</param>
     public static void ExtSetSizeDeltaX(this RectTransform target, float value)
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            return;
+        }
+
         Vector2 size = target.sizeDelta;
         size.x = value;
         target.sizeDelta = size;
     }
 
+    /// <summary>设置 RectTransform 的 sizeDelta.y，并保留 x。</summary>
+    /// <param name="target">目标 RectTransform。</param>
+    /// <param name="value">要设置的高度差值。</param>
     public static void ExtSetSizeDeltaY(this RectTransform target, float value)
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            return;
+        }
+
         Vector2 size = target.sizeDelta;
         size.y = value;
         target.sizeDelta = size;

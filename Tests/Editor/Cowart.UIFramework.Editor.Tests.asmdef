@@ -10,5 +10,9 @@
   ],
   "includePlatforms": [
     "Editor"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
   ]
 }
