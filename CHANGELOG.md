@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2026-08-21
+
+- 新增 `UIRoot` 自定义 Inspector，将基础引用和界面层级分区显示。
+- 为 Background、Normal、Fixed、Popup、Guide 和 Top 层补充中文用途说明。
+- 新增自定义 Inspector 注册及序列化字段缓存测试。
+
 ## [1.1.0] - 2026-08-19
 
 - 修复使用基类静态类型传入 Prefab 时，`UIManager.Open` 重复创建并遗留失管面板的问题。

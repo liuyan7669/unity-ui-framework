@@ -35,7 +35,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#1.1.0
+https://github.com/liuyan7669/unity-ui-framework.git#1.1.1
 ```
 
 ## 创建 UI 根节点
@@ -60,6 +60,8 @@ UIRoot
     ├── GuideLayer
     └── TopLayer
 ```
+
+选择 `UIRoot` 后，Inspector 会把基础引用和界面层级分区显示，并在每个层级下直接给出中文用途说明，方便判断不同界面应该放在哪一层。
 
 ## 锚点匹配四角
 
