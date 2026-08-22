@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.3] - 2026-08-23
+
+- 新增包专用图标，并将包内组件脚本的默认图标统一替换为该图标。
+
 ## [1.1.2] - 2026-08-23
 
 - 将 `UIQuestion` 示例同步到 Object Tools 的 `PrefabSpawner.SpawnedObjects` 新属性。
