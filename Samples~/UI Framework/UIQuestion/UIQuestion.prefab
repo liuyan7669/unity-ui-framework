@@ -1603,7 +1603,7 @@ MonoBehaviour:
   _Content: {fileID: 0}
   _Prefabs:
   - {fileID: 5305808512563435440}
-  _AllGeneratedObjects: []
+  _SpawnedObjects: []
 --- !u!1 &5305808513648305096
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,7 +1790,7 @@ MonoBehaviour:
   _Content: {fileID: 0}
   _Prefabs:
   - {fileID: 5305808513975146830}
-  _AllGeneratedObjects: []
+  _SpawnedObjects: []
 --- !u!1 &5305808513853259289
 GameObject:
   m_ObjectHideFlags: 0

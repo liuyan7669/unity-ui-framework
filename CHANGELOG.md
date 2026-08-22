@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.2] - 2026-08-23
+
+- 将 `UIQuestion` 示例同步到 Object Tools 的 `PrefabSpawner.SpawnedObjects` 新属性。
+- 更新示例 Prefab 的生成对象列表序列化字段名，保持导入后的引用一致。
+
 ## [1.1.1] - 2026-08-21
 
 - 新增 `UIRoot` 自定义 Inspector，将基础引用和界面层级分区显示。

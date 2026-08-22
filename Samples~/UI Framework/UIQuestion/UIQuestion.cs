@@ -825,9 +825,9 @@ public class UIQuestion : UIView
 
         Canvas.ForceUpdateCanvases();
 
-        for (int i = 0; i < generation.AllGeneratedObjects.Count; i++)
+        for (int i = 0; i < generation.SpawnedObjects.Count; i++)
         {
-            GameObject item = generation.AllGeneratedObjects[i];
+            GameObject item = generation.SpawnedObjects[i];
             if (item == null)
             {
                 continue;
