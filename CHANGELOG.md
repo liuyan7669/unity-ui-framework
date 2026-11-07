@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.0] - 2026-11-08
+
+### 破坏性变更
+
+- 移除 `UIEventExtensions` 和 `UILayoutExtensions` 中全部 UGUI/TMP 快捷扩展（23 个方法名、33 个方法，如 `ExtSetOnClick`、`ExtSetOnValueChanged`、`ExtGetRect`、`ExtSetAlpha`、`ExtSetPivotKeepPosition`、`ExtRebuildLayoutTree`）。框架核心与示例均未使用这些扩展。它们已迁移到 Extensions（`com.cowart.extensions`）2.0.0，前缀改为 `Cw`，例如 `button.ExtSetOnClick(...)` → `button.CwSetOnClick(...)`。
+- 运行时程序集不再引用 `Unity.TextMeshPro`。包仍依赖 TextMesh Pro，供示例界面使用。
+- 移除对应的 EditMode 测试。
+
 ## [1.1.4] - 2026-11-08
 
 - 统一 Cowart 包图标：重新设计为按功能类别配色的圆角图标（层叠的面板窗口），同步更新 `Icon.png` 与 `Icon@2x.png`。

@@ -1,7 +1,6 @@
 {
   "name": "Cowart.UIFramework",
   "references": [
-    "Unity.UGUI",
-    "Unity.TextMeshPro"
+    "Unity.UGUI"
   ]
 }

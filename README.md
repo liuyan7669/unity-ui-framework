@@ -11,7 +11,6 @@
 - 支持 Predicate 条件查询、关闭和删除
 - 支持批量关闭以及排除指定类型
 - 使用 UIArgs 子类传递面板专用参数
-- 提供 RectTransform、Image、UGUI/TMP 事件和布局树重建扩展
 - 支持多选 UI 锚点匹配当前矩形四角，并可通过 Undo 撤销
 
 ## 安装
@@ -35,7 +34,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#1.1.4
+https://github.com/liuyan7669/unity-ui-framework.git#2.0.0
 ```
 
 ## 创建 UI 根节点
@@ -139,54 +138,13 @@ UIManager.CloseAll(typeof(UIHome));
 
 因此，需要处理全部面板时应使用条件重载，例如 `UIManager.Close<UIView>(view => true)`；无条件的 `Close<UIView>()` 只会查找精确的 `UIView` 类型，而 `UIView` 本身是抽象类，正常情况下不会注册该键。
 
-## UGUI 快捷扩展
+## UGUI 快捷扩展（已迁移）
 
-`UILayoutExtensions` 和 `UIEventExtensions` 位于全局命名空间，无需额外添加 using：
+从 `2.0.0` 起，UI Framework 不再包含 UGUI/TMP 快捷扩展，专注于界面分层和面板管理。原 `UIEventExtensions`、`UILayoutExtensions` 中的全部方法已移入 [Extensions](https://github.com/liuyan7669/unity-extensions)（`com.cowart.extensions` 2.0.0）。从 1.x 升级时：
 
-```csharp
-Button button = GetComponent<Button>();
-Image image = GetComponent<Image>();
-RectTransform panel = GetComponent<RectTransform>();
-
-RectTransform buttonRect = button.ExtGetRect();
-image.ExtSetAlpha(0.5f);
-button.ExtSetOnClick(OnStartButtonClick);
-panel.ExtSetAnchoredPositionX(100f);
-panel.ExtSetSizeDeltaY(300f);
-panel.ExtSetPivotKeepPosition(new Vector2(0.5f, 1f));
-panel.ExtRebuildLayoutTree();
-panel.ExtRebuildNearestLayoutNextFrame(this);
-```
-
-`ExtGetRect` 可由 Button、Image、TMP_Text、Slider、Toggle 等 UI 组件直接调用。目标为空或所在对象不是 RectTransform 时返回 `null`。
-
-`ExtSetAlpha` 会保留 Image 原有 RGB，只修改颜色透明度，并自动将参数限制在 `0–1`。
-
-还提供 `ExtSetCanvasGroupState`、UGUI/TMP 两种 `ExtSetText` 和 `ExtSetNavigationNone`，用于一次设置 CanvasGroup 状态、按文本内容控制显隐以及关闭 Selectable 导航。
-
-事件扩展统一使用 `System.Action`。默认先移除对应事件中通过代码注册的全部运行时监听，再添加新回调；最后一个参数传入 `false` 时保留已有监听并追加。Unity 的 `RemoveAllListeners` 不会移除 Inspector 中配置的持久化监听。
-
-```csharp
-toggle.ExtSetOnValueChanged(OnToggleChanged);
-inputField.ExtSetOnValueChanged(OnInputChanged);
-inputField.ExtSetOnEndEdit(OnInputEndEdit);
-dropdown.ExtSetOnValueChanged(OnDropdownChanged);
-slider.ExtSetOnValueChanged(OnSliderChanged);
-scrollbar.ExtSetOnValueChanged(OnScrollbarChanged);
-scrollRect.ExtSetOnValueChanged(OnScrollPositionChanged);
-
-tmpInputField.ExtSetOnValueChanged(OnInputChanged);
-tmpInputField.ExtSetOnSubmit(OnInputSubmitted);
-tmpDropdown.ExtSetOnValueChanged(OnDropdownChanged);
-
-button.ExtSetOnClick(OnAdditionalClick, false);
-```
-
-当前事件扩展覆盖 `Button`、`Toggle`、`InputField`、`Dropdown`、`Slider`、`Scrollbar`、`ScrollRect`、`MaskableGraphic`、`EventTrigger`、`TMP_InputField` 和 `TMP_Dropdown` 的公开 UnityEvent。
-
-Unity 2019 和 2020 的旧版 UGUI 没有独立的 `InputField.onSubmit`，因此该版本中的 `InputField.ExtSetOnSubmit` 会兼容绑定到 `onEndEdit`，输入框失去焦点时也会触发回调。`TMP_InputField.ExtSetOnSubmit` 不受影响。
-
-`ExtRebuildLayoutTree` 会按照先子节点、后父节点的顺序立即重建布局树。延迟重建需要一个有效的 `MonoBehaviour` 启动协程；不传参数时会从目标父级自动查找。
+1. 安装 `com.cowart.extensions` 2.0.0 或更高版本。
+2. 在调用处添加 `using Cowart.Extensions;`。
+3. 把方法前缀 `Ext` 改为 `Cw`，例如 `button.ExtSetOnClick(...)` → `button.CwSetOnClick(...)`、`content.ExtRebuildLayoutTree()` → `content.CwRebuildLayoutTree()`；参数不变。
 
 ## 示例
 
@@ -196,7 +154,7 @@ Package Manager 中提供 `UI Framework Examples` 导入入口，包含常用界
 
 ## 测试
 
-包内 `Tests/Editor` 提供 EditMode 测试，覆盖 `UIManager` 的面板缓存与类型匹配、`UIView` 生命周期、`UIRoot` 层级配置，以及 UGUI/TMP 事件和布局扩展。
+包内 `Tests/Editor` 提供 EditMode 测试，覆盖 `UIManager` 的面板缓存与类型匹配、`UIView` 生命周期、`UIRoot` 层级配置。
 
 通过 Package Manager 安装后，如需在 Test Runner 中显示包测试，请在项目的 `Packages/manifest.json` 根对象中添加 `testables` 字段（以下仅示意）：
 
@@ -214,7 +172,7 @@ Package Manager 中提供 `UI Framework Examples` 导入入口，包含常用界
 
 - Unity 2019.4 或更高版本
 - Unity UI（`com.unity.ugui`）
-- TextMesh Pro 2.1.6 或更高版本
+- TextMesh Pro 2.1.6 或更高版本（示例界面使用，通过包依赖自动引入）
 - Configuration Tools、Object Tools（仅 `UIQuestion` 示例需要）
 - DOTween（仅 `UINewbieGuide` 示例需要）
 
