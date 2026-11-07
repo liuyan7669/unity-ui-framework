@@ -35,7 +35,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#1.1.3
+https://github.com/liuyan7669/unity-ui-framework.git#1.1.4
 ```
 
 ## 创建 UI 根节点
