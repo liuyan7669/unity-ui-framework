@@ -34,7 +34,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#2.0.0
+https://github.com/liuyan7669/unity-ui-framework.git#2.0.1
 ```
 
 ## 创建 UI 根节点
@@ -179,3 +179,7 @@ Package Manager 中提供 `UI Framework Examples` 导入入口，包含常用界
 ## 许可证
 
 本包使用 MIT License，详情参见 `LICENSE.md`。
+
+## Inspector Groups 可选兼容
+
+安装 Inspector Groups 1.2.2 或更高版本（提供 `InspectorGroupRenderer` 入口）后，UIView 子类的字段和成员支持 FoldoutGroup、EndFoldout、条件显示、Button 等包内特性；UIView 基础设置仍由 UI Framework 单独绘制，不重复显示。未安装或安装的旧版本尚未提供该入口时，子类字段使用普通 Inspector 绘制。UI Framework 不添加对 Inspector Groups 的程序集或 UPM 依赖；使用特性的业务脚本仍需自行引用对应特性包。

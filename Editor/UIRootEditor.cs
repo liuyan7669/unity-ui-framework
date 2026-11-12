@@ -9,7 +9,6 @@ namespace Cowart.UIFramework.Editor
     [CanEditMultipleObjects]
     public sealed class UIRootEditor : UnityEditor.Editor
     {
-        private SerializedProperty scriptProperty;
         private SerializedProperty dontDestroyOnLoadProperty;
         private SerializedProperty uiCameraProperty;
         private SerializedProperty uiCanvasProperty;
@@ -20,11 +19,11 @@ namespace Cowart.UIFramework.Editor
         private SerializedProperty guideLayerProperty;
         private SerializedProperty topLayerProperty;
         private GUIStyle descriptionStyle;
+        private GUIStyle settingsLayoutStyle;
 
         /// <summary>缓存 UIRoot 的序列化字段。</summary>
         private void OnEnable()
         {
-            scriptProperty = serializedObject.FindProperty("m_Script");
             dontDestroyOnLoadProperty = serializedObject.FindProperty("dontDestroyOnLoad");
             uiCameraProperty = serializedObject.FindProperty("uiCamera");
             uiCanvasProperty = serializedObject.FindProperty("uiCanvas");
@@ -41,11 +40,6 @@ namespace Cowart.UIFramework.Editor
         {
             serializedObject.Update();
 
-            using (new EditorGUI.DisabledScope(true))
-            {
-                EditorGUILayout.PropertyField(scriptProperty);
-            }
-
             GUILayout.Space(4f);
             DrawBasicSettings();
             GUILayout.Space(4f);
@@ -57,55 +51,91 @@ namespace Cowart.UIFramework.Editor
         /// <summary>绘制 UIRoot 的基础引用。</summary>
         private void DrawBasicSettings()
         {
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.LabelField("基础设置", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(
-                dontDestroyOnLoadProperty,
-                new GUIContent("切换场景时保留", "勾选后，运行时切换场景不会销毁整个 UI 根节点。"));
-            EditorGUILayout.PropertyField(
-                uiCameraProperty,
-                new GUIContent("UI 相机", "专门用于渲染 UGUI 的相机。"));
-            EditorGUILayout.PropertyField(
-                uiCanvasProperty,
-                new GUIContent("主画布", "承载全部 UI 层级的主 Canvas。"));
+            bool expanded = BeginSettingsGroup("基础设置", "Basic");
+            if (expanded)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(
+                        dontDestroyOnLoadProperty,
+                        new GUIContent("切换场景时保留", "勾选后，运行时切换场景不会销毁整个 UI 根节点。"));
+                    EditorGUILayout.PropertyField(
+                        uiCameraProperty,
+                        new GUIContent("UI 相机", "专门用于渲染 UGUI 的相机。"));
+                    EditorGUILayout.PropertyField(
+                        uiCanvasProperty,
+                        new GUIContent("主画布", "承载全部 UI 层级的主 Canvas。"));
+                }
+            }
             EditorGUILayout.EndVertical();
         }
 
         /// <summary>绘制全部 UI 层级引用及推荐用途。</summary>
         private void DrawLayerSettings()
         {
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.LabelField("界面层级（从下到上）", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox(
-                "越靠后的层通常显示得越靠上。以下是推荐用途，层级本身主要用于区分父节点和显示顺序。",
-                MessageType.Info);
+            bool expanded = BeginSettingsGroup("界面层级（从下到上）", "Layers");
+            if (expanded)
+            {
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    GUILayout.Space(6f);
+                    EditorGUILayout.HelpBox(
+                        "越靠后的层通常显示得越靠上。以下是推荐用途，层级本身主要用于区分父节点和显示顺序。",
+                        MessageType.Info);
+                    GUILayout.Space(6f);
 
-            DrawLayer(
-                backgroundLayerProperty,
-                "背景层（Background）",
-                "放全屏背景、场景底图和不会遮挡主界面的装饰内容。");
-            DrawLayer(
-                normalLayerProperty,
-                "普通层（Normal）",
-                "放主界面、功能页面等常规面板；大多数 UIView 都放在这一层。");
-            DrawLayer(
-                fixedLayerProperty,
-                "固定层（Fixed）",
-                "放需要常驻在普通页面上方的 HUD、状态栏、底部导航等固定界面。");
-            DrawLayer(
-                popupLayerProperty,
-                "弹窗层（Popup）",
-                "放确认框、奖励窗口、二级弹窗等需要覆盖常规界面的内容。");
-            DrawLayer(
-                guideLayerProperty,
-                "引导层（Guide）",
-                "放新手引导遮罩、指示手势和步骤提示，确保引导内容显示在弹窗之上。");
-            DrawLayer(
-                topLayerProperty,
-                "顶层（Top）",
-                "放必须压住其他界面的全局加载遮罩、断线提示或最高优先级内容。");
-
+                    DrawLayer(
+                        backgroundLayerProperty,
+                        "背景层（Background）",
+                        "放全屏背景、场景底图和不会遮挡主界面的装饰内容。");
+                    DrawLayer(
+                        normalLayerProperty,
+                        "普通层（Normal）",
+                        "放主界面、功能页面等常规面板；大多数 UIView 都放在这一层。");
+                    DrawLayer(
+                        fixedLayerProperty,
+                        "固定层（Fixed）",
+                        "放需要常驻在普通页面上方的 HUD、状态栏、底部导航等固定界面。");
+                    DrawLayer(
+                        popupLayerProperty,
+                        "弹窗层（Popup）",
+                        "放确认框、奖励窗口、二级弹窗等需要覆盖常规界面的内容。");
+                    DrawLayer(
+                        guideLayerProperty,
+                        "引导层（Guide）",
+                        "放新手引导遮罩、指示手势和步骤提示，确保引导内容显示在弹窗之上。");
+                    DrawLayer(
+                        topLayerProperty,
+                        "顶层（Top）",
+                        "放必须压住其他界面的全局加载遮罩、断线提示或最高优先级内容。");
+                }
+            }
             EditorGUILayout.EndVertical();
+        }
+
+        /// <summary>绘制圆角分组标题，按组件和分组分别保存折叠状态，首次默认收起。</summary>
+        private bool BeginSettingsGroup(string title, string group)
+        {
+            if (settingsLayoutStyle == null)
+            {
+                settingsLayoutStyle = new GUIStyle
+                {
+                    padding = new RectOffset(GUI.skin.box.padding.left, GUI.skin.box.padding.right, 6, 6),
+                    margin = new RectOffset(GUI.skin.box.margin.left, GUI.skin.box.margin.right,
+                        GUI.skin.box.margin.top, GUI.skin.box.margin.bottom)
+                };
+            }
+            Rect background = EditorGUILayout.BeginVertical(settingsLayoutStyle);
+            background.xMin = 6f;
+            background.xMax = EditorGUIUtility.currentViewWidth - 6f;
+            if (Event.current.type == EventType.Repaint)
+                GUI.Box(background, GUIContent.none, EditorStyles.helpBox);
+
+            string stateKey = $"Cowart.UIFramework.UIRoot.{group}:{target.GetInstanceID()}";
+            bool previous = SessionState.GetBool(stateKey, false);
+            bool expanded = EditorGUILayout.Foldout(previous, title, true);
+            if (expanded != previous) SessionState.SetBool(stateKey, expanded);
+            return expanded;
         }
 
         /// <summary>绘制单个层级引用和用途说明。</summary>
