@@ -24,7 +24,6 @@ namespace Cowart.UIFramework.Tests
 
                 string[] propertyFieldNames =
                 {
-                    "scriptProperty",
                     "dontDestroyOnLoadProperty",
                     "uiCameraProperty",
                     "uiCanvasProperty",

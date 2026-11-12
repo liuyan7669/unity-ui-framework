@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cowart.ConfigurationTools;
-using Cowart.ObjectTools;
+using Cowart.ConfigLoader;
+using Cowart.ObjectUtilities;
 using Cowart.UIFramework;
 using TMPro;
 using UnityEngine;

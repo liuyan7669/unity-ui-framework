@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.2] - 2026-11-12
+
+- 同步 UIRoot Inspector 测试，移除对已隐藏 Script 字段的过时要求。
+
+- 统一名称和关联包引用，修正 UGUI 程序集引用（适用时），保持核心包独立。
+
 ## [2.0.1] - 2026-11-12
 
 - UIRoot 和 UIView 设置使用带左右边距的圆角折叠分组，首次默认收起，按组件和分组独立保存会话状态。
@@ -10,7 +16,7 @@
 
 ### 破坏性变更
 
-- 移除 `UIEventExtensions` 和 `UILayoutExtensions` 中全部 UGUI/TMP 快捷扩展（23 个方法名、33 个方法，如 `ExtSetOnClick`、`ExtSetOnValueChanged`、`ExtGetRect`、`ExtSetAlpha`、`ExtSetPivotKeepPosition`、`ExtRebuildLayoutTree`）。框架核心与示例均未使用这些扩展。它们已迁移到 Extensions（`com.cowart.extensions`）2.0.0，前缀改为 `Cw`，例如 `button.ExtSetOnClick(...)` → `button.CwSetOnClick(...)`。
+- 移除 `UIEventExtensions` 和 `UILayoutExtensions` 中全部 UGUI/TMP 快捷扩展（23 个方法名、33 个方法，如 `ExtSetOnClick`、`ExtSetOnValueChanged`、`ExtGetRect`、`ExtSetAlpha`、`ExtSetPivotKeepPosition`、`ExtRebuildLayoutTree`）。框架核心与示例均未使用这些扩展。它们已迁移到 Extensions（`com.cowart.cw-extensions`）2.0.0，前缀改为 `Cw`，例如 `button.ExtSetOnClick(...)` → `button.CwSetOnClick(...)`。
 - 运行时程序集不再引用 `Unity.TextMeshPro`。包仍依赖 TextMesh Pro，供示例界面使用。
 - 移除对应的 EditMode 测试。
 
@@ -24,7 +30,7 @@
 
 ## [1.1.2] - 2026-08-23
 
-- 将 `UIQuestion` 示例同步到 Object Tools 的 `PrefabSpawner.SpawnedObjects` 新属性。
+- 将 `UIQuestion` 示例同步到 Object Utilities 的 `PrefabSpawner.SpawnedObjects` 新属性。
 - 更新示例 Prefab 的生成对象列表序列化字段名，保持导入后的引用一致。
 
 ## [1.1.1] - 2026-08-21
@@ -103,7 +109,7 @@
 ## [1.0.1] - 2026-07-31
 
 - 将 Hierarchy 创建入口统一到 `GameObject > Cowart > UI > 创建 UI 框架层级`。
-- 更新 Configuration Tools 和 Object Tools 依赖版本。
+- 更新 Config Loader 和 Object Utilities 依赖版本。
 
 ## [1.0.0] - 2026-07-23
 
@@ -111,4 +117,4 @@
 - 新增场景面板自动扫描、层级校正和 UGUI Hierarchy 创建菜单。
 - 新增面板打开、查找、关闭、批量关闭和删除接口。
 - 集成 UI Framework 示例脚本、Prefab 和字体资源。
-- 补充示例所需的 Configuration Tools、Object Tools 和 TextMesh Pro 依赖。
+- 补充示例所需的 Config Loader、Object Utilities 和 TextMesh Pro 依赖。

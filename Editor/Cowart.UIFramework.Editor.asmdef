@@ -2,7 +2,7 @@
   "name": "Cowart.UIFramework.Editor",
   "references": [
     "Cowart.UIFramework",
-    "Unity.UGUI"
+    "UnityEngine.UI"
   ],
   "includePlatforms": [
     "Editor"

@@ -34,7 +34,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#2.0.1
+https://github.com/liuyan7669/unity-ui-framework.git#2.0.2
 ```
 
 ## 创建 UI 根节点
@@ -140,17 +140,17 @@ UIManager.CloseAll(typeof(UIHome));
 
 ## UGUI 快捷扩展（已迁移）
 
-从 `2.0.0` 起，UI Framework 不再包含 UGUI/TMP 快捷扩展，专注于界面分层和面板管理。原 `UIEventExtensions`、`UILayoutExtensions` 中的全部方法已移入 [Extensions](https://github.com/liuyan7669/unity-extensions)（`com.cowart.extensions` 2.0.0）。从 1.x 升级时：
+从 `2.0.0` 起，UI Framework 不再包含 UGUI/TMP 快捷扩展，专注于界面分层和面板管理。原 `UIEventExtensions`、`UILayoutExtensions` 中的全部方法已移入 [Cw Extensions](https://github.com/liuyan7669/unity-cw-extensions)（`com.cowart.cw-extensions` 3.0.0）。从 1.x 升级时：
 
-1. 安装 `com.cowart.extensions` 2.0.0 或更高版本。
-2. 在调用处添加 `using Cowart.Extensions;`。
+1. 安装 `com.cowart.cw-extensions` 3.0.0 或更高版本。
+2. 在调用处添加 `using Cowart.CwExtensions;`。
 3. 把方法前缀 `Ext` 改为 `Cw`，例如 `button.ExtSetOnClick(...)` → `button.CwSetOnClick(...)`、`content.ExtRebuildLayoutTree()` → `content.CwRebuildLayoutTree()`；参数不变。
 
 ## 示例
 
 Package Manager 中提供 `UI Framework Examples` 导入入口，包含常用界面脚本、Prefab、配套字体资源和新手引导示例。
 
-`UIQuestion` 示例需要 Configuration Tools 和 Object Tools。`UINewbieGuide` 示例使用 DOTween 播放聚焦、点按、框选和拖放动画。导入对应示例前，请先安装这些可选依赖；它们不再作为 UI Framework 核心包的强制依赖。
+`UIQuestion` 示例需要 Config Loader 和 Object Utilities。`UINewbieGuide` 示例使用 DOTween 播放聚焦、点按、框选和拖放动画。导入对应示例前，请先安装这些可选依赖；它们不再作为 UI Framework 核心包的强制依赖。
 
 ## 测试
 
@@ -173,7 +173,7 @@ Package Manager 中提供 `UI Framework Examples` 导入入口，包含常用界
 - Unity 2019.4 或更高版本
 - Unity UI（`com.unity.ugui`）
 - TextMesh Pro 2.1.6 或更高版本（示例界面使用，通过包依赖自动引入）
-- Configuration Tools、Object Tools（仅 `UIQuestion` 示例需要）
+- Config Loader、Object Utilities（仅 `UIQuestion` 示例需要）
 - DOTween（仅 `UINewbieGuide` 示例需要）
 
 ## 许可证

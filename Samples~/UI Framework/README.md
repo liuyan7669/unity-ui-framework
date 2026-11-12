@@ -12,7 +12,7 @@
 
 ## UIQuestion 依赖
 
-`UIQuestion` 使用 Cowart Configuration Tools 的题目数据类型和 Cowart Object Tools 的预制体生成器。导入本示例前，请先安装这两个包。
+`UIQuestion` 使用 Cowart Config Loader 的题目数据类型和 Cowart Object Utilities 的预制体生成器。导入本示例前，请先安装这两个包。
 
 ## UINewbieGuide 依赖
 

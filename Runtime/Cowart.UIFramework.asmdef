@@ -1,6 +1,6 @@
 {
   "name": "Cowart.UIFramework",
   "references": [
-    "Unity.UGUI"
+    "UnityEngine.UI"
   ]
 }
