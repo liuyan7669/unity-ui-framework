@@ -14,7 +14,7 @@ namespace Cowart.UIFramework.Editor
     /// </summary>
     public static class UIHierarchyCreator
     {
-        private const string MenuPath = "GameObject/Cowart/UI/创建 UI 框架层级";
+        private const string MenuPath = "GameObject/Cowart/框架/创建 UI 系统";
         private const string PanelMenuPath = "GameObject/Cowart/UI/创建面板";
         private const string PanelBackgroundSpritePath = "UI/Skin/Background.psd";
         private const int UiMenuGroupPriority = 100;
@@ -23,7 +23,7 @@ namespace Cowart.UIFramework.Editor
         /// 创建 UIRoot、UICamera、EventSystem、UICanvas 及全部 UI 层级。
         /// </summary>
         /// <param name="menuCommand">Unity 菜单命令上下文。</param>
-        [MenuItem(MenuPath, false, UiMenuGroupPriority)]
+        [MenuItem(MenuPath, false, -10000)]
         private static void Create(MenuCommand menuCommand)
         {
             GameObject rootObject = new GameObject("UIRoot", typeof(UIRoot), typeof(UIManager));
@@ -60,7 +60,7 @@ namespace Cowart.UIFramework.Editor
         /// 在右键选中的 UGUI 物体下创建一个铺满父节点的标准 Panel。
         /// </summary>
         /// <param name="menuCommand">Unity 菜单命令上下文。</param>
-        [MenuItem(PanelMenuPath, false, UiMenuGroupPriority)]
+        [MenuItem(PanelMenuPath, false, -10000)]
         private static void CreatePanel(MenuCommand menuCommand)
         {
             GameObject parentObject = menuCommand.context as GameObject;

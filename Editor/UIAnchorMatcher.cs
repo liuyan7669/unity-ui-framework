@@ -11,8 +11,8 @@ namespace Cowart.UIFramework.Editor
     /// </summary>
     public static class UIAnchorMatcher
     {
-        private const string ToolbarMenuPath = "Cowart/UI/锚点匹配四角";
-        private const string GameObjectMenuPath = "GameObject/Cowart/UI/锚点匹配四角";
+        private const string ToolbarMenuPath = "Cowart/UI/锚点贴合当前矩形";
+        private const string GameObjectMenuPath = "GameObject/Cowart/UI/锚点贴合当前矩形";
         private const string UndoName = "Match UI Anchors To Corners";
         private const int UiMenuGroupPriority = 100;
 
@@ -35,7 +35,7 @@ namespace Cowart.UIFramework.Editor
         /// <summary>
         /// 从物体右键菜单匹配全部选中 UI 的锚点。
         /// </summary>
-        [MenuItem(GameObjectMenuPath, false, UiMenuGroupPriority)]
+        [MenuItem(GameObjectMenuPath, false, -10000)]
         private static void MatchFromGameObjectMenu()
         {
             MatchSelectedAnchorsToCorners();

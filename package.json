@@ -1,6 +1,6 @@
 {
   "name": "com.cowart.ui-framework",
-  "version": "2.0.2",
+  "version": "3.1.0",
   "displayName": "UI Framework",
   "description": "提供基于 Unity UGUI 的分层界面管理、面板生命周期和统一面板访问接口。",
   "unity": "2019.4",
@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "com.unity.textmeshpro": "2.1.6",
-    "com.unity.ugui": "1.0.0"
+    "com.unity.ugui": "1.0.0",
+    "com.cowart.inspector-groups": "3.1.0"
   },
   "keywords": [
     "canvas",

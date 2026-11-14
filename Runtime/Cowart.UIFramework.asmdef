@@ -1,6 +1,7 @@
 {
   "name": "Cowart.UIFramework",
   "references": [
-    "UnityEngine.UI"
+    "UnityEngine.UI",
+    "Cowart.InspectorGroups"
   ]
 }

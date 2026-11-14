@@ -1,5 +1,29 @@
 # Changelog
 
+## [Unreleased]
+
+## [3.1.0] - 2026-11-14
+
+- 接入 OpenUPM 官方 tag 发布工作流，自动触发扫描并检查注册表发布结果。
+
+- 统一 Cowart 包版本为 3.1.0。
+
+- 包内分组显式使用 Inspector Groups 框架样式；用户新增分组默认保持普通样式，所有绘制集中在 Inspector Groups。
+
+- 补回 UIRoot 基础字段提示与各显示层级的完整用途说明。
+
+- Inspector 改为声明字段、状态和操作回调，所有布局与控件由 Inspector Groups 统一绘制，移除包内 Inspector 手工绘制代码。
+
+- 使用类级 HideScript 声明隐藏 Script 行，移除专用 Inspector 中写死的排除规则；UIManager、UIView 及其未单独标记 HideScript 的派生类保留 Script 引用行。
+
+- 修复选中对象在脚本继承关系变更、重编译后旧 Inspector 继续访问失效字段的问题；统一验证目标类型并刷新字段绑定。
+
+- 声明 Inspector Groups 3.1.0 依赖；移除包内 Inspector 自定义样式，业务操作复用统一绘制。
+
+- 按功能整理 Cowart 菜单分类与名称，菜单声明保留在所属包内。 UIView 使用 Inspector Groups 字段特性分组，移除可选跨包反射集成。
+
+- 将 UI 系统创建入口调整为 `GameObject > Cowart > 框架 > 创建 UI 系统`。
+
 ## [2.0.2] - 2026-11-12
 
 - 同步 UIRoot Inspector 测试，移除对已隐藏 Script 字段的过时要求。

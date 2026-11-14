@@ -14,6 +14,7 @@ namespace Cowart.UIFramework
         #region 字段
 
         /// <summary>面板应该归属的 UI 显示层级。</summary>
+        [Cowart.InspectorGroups.FoldoutGroup("UIView 设置", true, style: Cowart.InspectorGroups.InspectorGroupStyle.Framework)]
         [SerializeField] private UILayer layer = UILayer.Normal;
 
         /// <summary>面板使用的背景面板。</summary>

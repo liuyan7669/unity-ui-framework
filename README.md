@@ -34,7 +34,7 @@ com.cowart.ui-framework
 ### 通过 Git URL 安装
 
 ```text
-https://github.com/liuyan7669/unity-ui-framework.git#2.0.2
+https://github.com/liuyan7669/unity-ui-framework.git#3.1.0
 ```
 
 ## 创建 UI 根节点
@@ -42,7 +42,7 @@ https://github.com/liuyan7669/unity-ui-framework.git#2.0.2
 在 Unity 菜单中选择：
 
 ```text
-GameObject > Cowart > UI > 创建 UI 框架层级
+GameObject > Cowart > 框架 > 创建 UI 系统
 ```
 
 生成的 Hierarchy：
@@ -67,13 +67,13 @@ UIRoot
 在 Hierarchy 中选择一个或多个具有 `RectTransform` 父节点的 UI，然后执行：
 
 ```text
-Cowart > UI > 锚点匹配四角
+Cowart > UI > 锚点贴合当前矩形
 ```
 
 也可以通过物体右键菜单执行：
 
 ```text
-GameObject > Cowart > UI > 锚点匹配四角
+GameObject > Cowart > UI > 锚点贴合当前矩形
 ```
 
 两个入口共用同一套批量逻辑。工具会把每个 UI 的 `anchorMin`、`anchorMax` 移动到其当前矩形四角，并将四边偏移归零。处理前后的视觉位置和尺寸保持不变，全部选中物体统一归入一次 Undo；处理中发生异常时会整体回滚。
@@ -180,6 +180,10 @@ Package Manager 中提供 `UI Framework Examples` 导入入口，包含常用界
 
 本包使用 MIT License，详情参见 `LICENSE.md`。
 
-## Inspector Groups 可选兼容
+## Inspector 绘制
 
-安装 Inspector Groups 1.2.2 或更高版本（提供 `InspectorGroupRenderer` 入口）后，UIView 子类的字段和成员支持 FoldoutGroup、EndFoldout、条件显示、Button 等包内特性；UIView 基础设置仍由 UI Framework 单独绘制，不重复显示。未安装或安装的旧版本尚未提供该入口时，子类字段使用普通 Inspector 绘制。UI Framework 不添加对 Inspector Groups 的程序集或 UPM 依赖；使用特性的业务脚本仍需自行引用对应特性包。
+UI Framework 依赖 Inspector Groups 3.1.0，UIView 基础设置及子类字段、成员均由 Inspector Groups 统一绘制，支持 FoldoutGroup、EndFoldout、条件显示、Button 等特性。包内分组显式使用框架样式，用户代码新增分组默认使用普通样式，分别保存折叠状态。UI Framework 只声明字段、状态与业务操作，不包含 Inspector 样式或布局实现；使用特性的业务脚本程序集仍需引用 Inspector Groups。
+
+## Inspector 统一依赖
+
+本包声明依赖 `com.cowart.inspector-groups` `3.1.0`，Inspector 样式统一由该基础包提供。安装前须配置 OpenUPM scoped registry（`https://package.openupm.com`，scope `com.cowart`）；UPM 会根据 dependencies 连带解析 Inspector Groups。使用未发布源码时，请同时使用本地 Inspector Groups 3.1.0。业务包之间不互相依赖，Samples 的可选组合不受此限制。
